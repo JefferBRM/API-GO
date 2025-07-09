@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestión de Usuarios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 40px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 50px;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 18px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+
+        .stat-card h3 {
+            color: #4f46e5;
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .table td {
+            padding: 15px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #4b5563;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fafc;
+            cursor: pointer;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #374151;
+            font-size: 1.5em;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #9ca3af;
+            padding: 5px;
+        }
+
+        .close:hover {
+            color: #374151;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: none;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Dashboard de Usuarios</h1>
+            <p>Administra y gestiona todos los usuarios del sistema</p>
+        </div>
+
+        <div class="main-content">
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="totalUsers">0</h3>
+                    <p>Total de Usuarios</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="recentUsers">0</h3>
+                    <p>Registros Recientes</p>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Buscar usuarios por nombre o email...">
+                </div>
+                <button class="btn btn-primary" onclick="openModal()">
+                    ➕ Nuevo Usuario
+                </button>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Fecha de Registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTable">
+                        <tr>
+                            <td colspan="6" class="loading">
+                                <div class="spinner"></div>
+                                Cargando usuarios...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nuevo Usuario</h2>
+                <button class="close" onclick="closeModal()">×</button>
+            </div>
+            <form id="userForm">
+                <div class="form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3001/api/users';
+        
+        let users = [];
+        let filteredUsers = [];
+        let currentEditingUser = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUsers();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+            
+            document.getElementById('userForm').addEventListener('submit', handleSubmit);
+            
+            document.getElementById('userModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch(API_BASE_URL);
+                const data = await response.json();
+                
+                if (data.success) {
+                    users = data.data;
+                    filteredUsers = users;
+                    renderUsers();
+                    updateStats();
+                } else {
+                    showAlert('Error al cargar usuarios: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión: ' + error.message, 'error');
+                renderEmptyState();
+            }
+        }
+
+        function renderUsers() {
+            const tbody = document.getElementById('usersTable');
+            
+            if (filteredUsers.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <h3>No hay usuarios</h3>
+                            <p>Agrega el primer usuario para comenzar</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filteredUsers.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.nombre}</td>
+                    <td>${user.email}</td>
+                    <td>${user.telefono || 'No especificado'}</td>
+                    <td>${formatDate(user.fecha_creacion)}</td>
+                    <td class="actions">
+                        <button class="btn btn-secondary btn-sm" onclick="editUser(${user.id})">
+                            ✏️ Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">
+                            🗑️ Eliminar
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderEmptyState() {
+            const tbody = document.getElementById('usersTable');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <h3>Error de conexión</h3>
+                        <p>No se pudo conectar con el servidor</p>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function updateStats() {
+            const now = new Date();
+            const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            
+            const recentUsers = users.filter(user => 
+                new Date(user.fecha_creacion) > oneWeekAgo
+            ).length;
+            
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('recentUsers').textContent = recentUsers;
+        }
+
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            filteredUsers = users.filter(user => 
+                user.nombre.toLowerCase().includes(searchTerm) ||
+                user.email.toLowerCase().includes(searchTerm)
+            );
+            renderUsers();
+        }
+
+        function openModal(user = null) {
+            currentEditingUser = user;
+            const modal = document.getElementById('userModal');
+            const form = document.getElementById('userForm');
+            const title = document.getElementById('modalTitle');
+            
+            if (user) {
+                title.textContent = 'Editar Usuario';
+                document.getElementById('nombre').value = user.nombre;
+                document.getElementById('email').value = user.email;
+                document.getElementById('telefono').value = user.telefono || '';
+            } else {
+                title.textContent = 'Nuevo Usuario';
+                form.reset();
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('userModal').style.display = 'none';
+            currentEditingUser = null;
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const userData = {
+                nombre: formData.get('nombre'),
+                email: formData.get('email'),
+                telefono: formData.get('telefono') || null
+            };
+
+            try {
+                let response;
+                
+                if (currentEditingUser) {
+                    response = await fetch(`${API_BASE_URL}/${currentEditingUser.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(userData)
+                    });
+                } else {
+                    response = await fetch(API_BASE_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(userData)
+                    });
+                }
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    closeModal();
+                    loadUsers();
+                } else {
+                    showAlert('Error: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión: ' + error.message, 'error');
+            }
+        }
+
+        async function editUser(userId) {
+            const user = users.find(u => u.id === userId);
+            if (user) {
+                openModal(user);
+            }
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/${userId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    loadUsers();
+                } else {
+                    showAlert('Error: ' + data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('Error de conexión: ' + error.message, 'error');
+            }
+        }
+
+        function showAlert(message, type) {
+            const container = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            container.innerHTML = '';
+            container.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+    </script>
+</body>
+</html>
