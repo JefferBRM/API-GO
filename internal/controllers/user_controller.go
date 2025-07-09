@@ -49,7 +49,6 @@ func CreateUser(c *gin.Context) {
         return
     }
 
-    // Validaciones adicionales
     if strings.TrimSpace(input.Nombre) == "" {
         utils.ErrorResponse(c, http.StatusBadRequest, "El nombre es obligatorio", nil)
         return
@@ -60,7 +59,6 @@ func CreateUser(c *gin.Context) {
         return
     }
 
-    // Limpiar datos
     input.Nombre = strings.TrimSpace(input.Nombre)
     input.Email = strings.TrimSpace(strings.ToLower(input.Email))
     if input.Telefono != nil {
@@ -110,7 +108,6 @@ func UpdateUser(c *gin.Context) {
         return
     }
 
-    // Limpiar datos
     input.Nombre = strings.TrimSpace(input.Nombre)
     input.Email = strings.TrimSpace(strings.ToLower(input.Email))
     if input.Telefono != nil {

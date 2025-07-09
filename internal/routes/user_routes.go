@@ -9,7 +9,6 @@ import (
 )
 
 func SetupRoutes(r *gin.Engine) {
-    // Configurar CORS
     r.Use(cors.New(cors.Config{
         AllowOrigins:     []string{"*"},
         AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -18,18 +17,14 @@ func SetupRoutes(r *gin.Engine) {
         AllowCredentials: true,
     }))
 
-    // Middleware de logging
     r.Use(gin.Logger())
     r.Use(gin.Recovery())
 
-    // Servir archivos estáticos
     r.Static("/static", "./static")
     r.StaticFile("/", "./static/index.html")
 
-    // Rutas de API
     api := r.Group("/api")
     {
-        // Información de la API
         api.GET("/", func(c *gin.Context) {
             c.JSON(http.StatusOK, gin.H{
                 "message": "API de Gestión de Usuarios",
@@ -42,7 +37,6 @@ func SetupRoutes(r *gin.Engine) {
             })
         })
 
-        // Rutas de usuarios
         users := api.Group("/users")
         {
             users.GET("/", controllers.GetAllUsers)
@@ -53,7 +47,6 @@ func SetupRoutes(r *gin.Engine) {
         }
     }
 
-    // Health check
     r.GET("/health", func(c *gin.Context) {
         c.JSON(http.StatusOK, gin.H{
             "status":    "OK",
@@ -61,7 +54,6 @@ func SetupRoutes(r *gin.Engine) {
         })
     })
 
-    // Middleware para rutas no encontradas
     r.NoRoute(func(c *gin.Context) {
         c.JSON(http.StatusNotFound, gin.H{
             "success": false,

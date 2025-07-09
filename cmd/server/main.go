@@ -11,29 +11,23 @@ import (
 )
 
 func main() {
-    // Cargar variables de entorno
     if err := godotenv.Load(); err != nil {
         log.Println("No .env file found")
     }
 
-    // Inicializar base de datos
     if err := config.InitDB(); err != nil {
         log.Fatal("Error conectando a la base de datos:", err)
     }
     defer config.CloseDB()
 
-    // Configurar Gin
     if os.Getenv("GIN_MODE") == "release" {
         gin.SetMode(gin.ReleaseMode)
     }
 
-    // Crear router
     r := gin.Default()
 
-    // Configurar rutas
     routes.SetupRoutes(r)
 
-    // Obtener puerto
     port := os.Getenv("PORT")
     if port == "" {
         port = "3001"
