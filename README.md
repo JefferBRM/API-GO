@@ -76,9 +76,9 @@ La aplicación estará disponible en:
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| GET | `/api/users` | Obtener todos los usuarios |
+| GET | `/api/users/` | Obtener todos los usuarios |
 | GET | `/api/users/:id` | Obtener usuario por ID |
-| POST | `/api/users` | Crear nuevo usuario |
+| POST | `/api/users/` | Crear nuevo usuario |
 | PUT | `/api/users/:id` | Actualizar usuario |
 | DELETE | `/api/users/:id` | Eliminar usuario |
 | GET | `/health` | Health check |
