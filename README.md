@@ -35,7 +35,7 @@ API RESTful desarrollada en Go para la gestión de usuarios con operaciones CRUD
 ### 1. Clonar el repositorio
 ```bash
 git clone https://github.com/JefferBRM/API-GO.git
-cd api-go-users
+cd API-GO
 ```
 
 ### 2. Instalar dependencias
