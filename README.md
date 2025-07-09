@@ -170,7 +170,7 @@ El proyecto incluye un dashboard web moderno con:
 ## Autor
 
 **Tu Nombre**
-- GitHub: [@tu-usuario](https://github.com/tu-usuario)
-- Email: tu-email@example.com
+- GitHub: [@JefferBRM](https://github.com/tu-usuario)
+- Email: jeffersonguerrero332@gmail.com
 
 ---
