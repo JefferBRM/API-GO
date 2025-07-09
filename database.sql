@@ -34,5 +34,5 @@ CREATE TRIGGER trigger_actualizar_fecha
 -- Insertar datos de ejemplo (opcional)
 INSERT INTO usuarios (nombre, email, telefono) VALUES
 ('Jefferson Guerrero', 'jeffersonguerrero332@gmail.com', '+57 322 896 7226'),
-('María García', 'maria@example.com', '+57 301 987 6543'),
-('Carlos López', 'carlos@example.com', '+57 302 456 7890');
+('Maria Garcia', 'maria@example.com', '+57 301 987 6543'),
+('Carlos Lopez', 'carlos@example.com', '+57 302 456 7890');
