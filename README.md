@@ -2,6 +2,9 @@
 
 API RESTful desarrollada en Go para la gestión de usuarios con operaciones CRUD completas, incluyendo un dashboard web para administración.
 
+![image](https://github.com/user-attachments/assets/f86a8448-0208-4267-a8ff-23e07b298dbf)
+![image](https://github.com/user-attachments/assets/11a60d50-daf7-4b3c-aae3-d59d15457163)
+
 ## Características
 
 -  **CRUD Completo**: Crear, leer, actualizar y eliminar usuarios
@@ -17,21 +20,21 @@ API RESTful desarrollada en Go para la gestión de usuarios con operaciones CRUD
 ## Tecnologías Utilizadas
 
 - **Backend**: Go 1.24+ con Gin Web Framework
-- **Base de Datos**: PostgreSQL 12+
+- **Base de Datos**: PostgreSQL 17+
 - **Patrones**: MVC, Repository, Dependency Injection
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
 
 ## Requisitos
 
 - Go 1.24 o superior
-- PostgreSQL 12 o superior
+- PostgreSQL 17 o superior
 - Git
 
 ## Instalación
 
 ### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/api-go-users.git
+git clone https://github.com/JefferBRM/API-GO.git
 cd api-go-users
 ```
 
@@ -64,6 +67,7 @@ PORT=3001
 ### 5. Ejecutar la aplicación
 ```bash
 go run cmd/server/main.go
+go run ./cmd/server
 ```
 
 La aplicación estará disponible en:
